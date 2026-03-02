@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VisionTutor - AI Math & Science Tutor</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-container">
+    <header class="app-header">
+      <div class="logo">
+        <div class="logo-icon">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+            <circle cx="16" cy="16" r="14" stroke="currentColor" stroke-width="2"/>
+            <path d="M10 16 L14 20 L22 12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h1>VisionTutor</h1>
+      </div>
+      <p class="tagline">AI Math & Science Tutor with Real-Time Vision</p>
+    </header>
+
+    <main class="main-content">
+      <div class="video-section">
+        <div class="video-container">
+          <video id="camera-preview" autoplay playsinline muted></video>
+          <div class="video-overlay" id="video-overlay">
+            <span>Camera Off</span>
+          </div>
+          <div class="camera-badge" id="camera-badge">
+            <span class="badge-dot"></span>
+            <span>Live</span>
+          </div>
+        </div>
+        <div class="video-controls">
+          <button id="btn-camera" class="control-btn" title="Toggle Camera">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M23 7l-7 5 7 5V7z"/>
+              <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+            </svg>
+          </button>
+          <button id="btn-mic" class="control-btn" title="Toggle Microphone">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+              <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+              <line x1="12" y1="19" x2="12" y2="23"/>
+              <line x1="8" y1="23" x2="16" y2="23"/>
+            </svg>
+          </button>
+          <button id="btn-session" class="control-btn session-btn" title="Start Session">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-start">
+              <circle cx="12" cy="12" r="10"/>
+              <polygon points="10,8 16,12 10,16" fill="currentColor"/>
+            </svg>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-stop" style="display:none">
+              <circle cx="12" cy="12" r="10"/>
+              <rect x="9" y="9" width="6" height="6" fill="currentColor"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="interaction-section">
+        <div class="status-bar">
+          <div class="status-indicator" id="status-indicator">
+            <span class="status-dot"></span>
+            <span class="status-text" id="status-text">Ready to start</span>
+          </div>
+          <div class="audio-visualizer" id="audio-visualizer">
+            <div class="viz-bar"></div>
+            <div class="viz-bar"></div>
+            <div class="viz-bar"></div>
+            <div class="viz-bar"></div>
+            <div class="viz-bar"></div>
+          </div>
+        </div>
+
+        <div class="transcript-area" id="transcript-area">
+          <div class="welcome-message" id="welcome-message">
+            <div class="welcome-icon">
+              <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                <circle cx="24" cy="24" r="20" stroke="currentColor" stroke-width="2" opacity="0.3"/>
+                <circle cx="24" cy="24" r="12" stroke="currentColor" stroke-width="2" opacity="0.5"/>
+                <circle cx="24" cy="24" r="4" fill="currentColor"/>
+              </svg>
+            </div>
+            <h2>Welcome to VisionTutor</h2>
+            <p>Your AI-powered math and science tutor that can see and hear you in real-time.</p>
+            <div class="instructions">
+              <div class="instruction-item">
+                <span class="step">1</span>
+                <span>Enable your camera and microphone</span>
+              </div>
+              <div class="instruction-item">
+                <span class="step">2</span>
+                <span>Click the start button to begin your session</span>
+              </div>
+              <div class="instruction-item">
+                <span class="step">3</span>
+                <span>Show your homework or ask a question naturally</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="input-hint" id="input-hint">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+          </svg>
+          <span>Speak naturally or show your work to the camera</span>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/js/app.js"></script>
+</body>
+</html>

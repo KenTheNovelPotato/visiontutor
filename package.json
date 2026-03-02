@@ -1,0 +1,25 @@
+{
+  "name": "visiontutor",
+  "version": "1.0.0",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node server/index.js"
+  },
+  "keywords": [
+    "gemini",
+    "live-api",
+    "tutor",
+    "ai",
+    "vision"
+  ],
+  "author": "",
+  "license": "ISC",
+  "description": "AI Math & Science Tutor with Real-Time Vision powered by Gemini Live API",
+  "dependencies": {
+    "@google/genai": "^1.43.0",
+    "@octokit/rest": "^22.0.1",
+    "express": "^5.2.1",
+    "ws": "^8.19.0"
+  }
+}

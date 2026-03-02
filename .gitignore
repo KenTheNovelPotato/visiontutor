@@ -1,0 +1,10 @@
+node_modules/
+.cache/
+.local/
+.agents/
+.upm/
+.replit
+replit.md
+attached_assets/
+*.log
+.env
