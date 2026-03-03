@@ -1,36 +1,10 @@
-const { GoogleGenAI, Modality } = require('@google/genai');
+import { GoogleGenAI, Modality } from '@google/genai';
+import { SYSTEM_INSTRUCTION, getToolDeclarations, executeToolCall } from './agent.js';
 
-const SYSTEM_INSTRUCTION = `You are VisionTutor, an expert AI math and science tutor. You speak naturally and warmly, like a patient and encouraging teacher.
-
-CORE BEHAVIORS:
-- When a student shows you their homework, whiteboard, or written work through the camera, analyze it carefully and provide specific feedback
-- Guide students through problems step-by-step rather than giving answers directly
-- Use the Socratic method - ask guiding questions to help students discover answers
-- When you see mathematical notation or equations through the camera, read them aloud and discuss them
-- Celebrate small victories and encourage persistence when students struggle
-- If a student seems frustrated (based on their tone), slow down and try a different approach
-- Handle interruptions naturally - if a student says "wait" or "hold on", pause immediately and let them speak
-
-SUBJECTS YOU EXCEL AT:
-- Mathematics: Arithmetic, Algebra, Geometry, Trigonometry, Calculus, Statistics
-- Science: Physics, Chemistry, Biology, Earth Science
-- General problem-solving and study strategies
-
-VOICE & PERSONALITY:
-- Warm, patient, and encouraging
-- Use simple language first, then introduce technical terms with explanations
-- Give concrete examples and analogies to explain abstract concepts
-- Never make a student feel bad for not understanding something
-- Be concise in your responses - students learn better with shorter, focused explanations
-
-WHEN VIEWING STUDENT WORK:
-- First acknowledge what you see: "I can see your work on..."
-- Point out what they did correctly before addressing errors
-- For errors, explain WHY something is wrong, not just THAT it's wrong
-- Suggest the next step they should try`;
-
-async function createGeminiSession(callbacks) {
+export async function createGeminiSession(callbacks) {
   const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+
+  const toolDeclarations = getToolDeclarations();
 
   const session = await ai.live.connect({
     model: 'gemini-2.5-flash-native-audio-preview-12-2025',
@@ -45,13 +19,19 @@ async function createGeminiSession(callbacks) {
       },
       systemInstruction: {
         parts: [{ text: SYSTEM_INSTRUCTION }]
-      }
+      },
+      tools: toolDeclarations,
     },
     callbacks: {
       onopen: () => {
         console.log('[Gemini Live] Connection opened');
       },
       onmessage: (message) => {
+        if (message.toolCall) {
+          handleToolCall(session, message.toolCall, callbacks);
+          return;
+        }
+
         if (message.serverContent) {
           const sc = message.serverContent;
 
@@ -125,4 +105,29 @@ async function createGeminiSession(callbacks) {
   };
 }
 
-module.exports = { createGeminiSession };
+async function handleToolCall(session, toolCall, callbacks) {
+  if (!toolCall.functionCalls || toolCall.functionCalls.length === 0) return;
+
+  const responses = [];
+
+  for (const fc of toolCall.functionCalls) {
+    console.log(`[Gemini Live] Tool call: ${fc.name}`, JSON.stringify(fc.args));
+    callbacks.onText(`[Using tool: ${fc.name}]\n`);
+
+    const result = executeToolCall(fc.name, fc.args);
+    console.log(`[Gemini Live] Tool result:`, JSON.stringify(result));
+
+    responses.push({
+      id: fc.id,
+      name: fc.name,
+      response: result,
+    });
+  }
+
+  try {
+    session.sendToolResponse({ functionResponses: responses });
+    console.log('[Gemini Live] Tool response sent');
+  } catch (err) {
+    console.error('[Gemini Live] Error sending tool response:', err);
+  }
+}

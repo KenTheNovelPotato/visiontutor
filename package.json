@@ -1,6 +1,7 @@
 {
   "name": "visiontutor",
   "version": "1.0.0",
+  "type": "module",
   "main": "server/index.js",
   "scripts": {
     "start": "node server/index.js",
@@ -11,15 +12,17 @@
     "live-api",
     "tutor",
     "ai",
-    "vision"
+    "vision",
+    "adk"
   ],
   "author": "",
   "license": "ISC",
-  "description": "AI Math & Science Tutor with Real-Time Vision powered by Gemini Live API",
+  "description": "AI Math & Science Tutor with Real-Time Vision powered by Gemini Live API and Google ADK",
   "dependencies": {
+    "@google/adk": "^0.4.0",
     "@google/genai": "^1.43.0",
-    "@octokit/rest": "^22.0.1",
     "express": "^5.2.1",
-    "ws": "^8.19.0"
+    "ws": "^8.19.0",
+    "zod": "^4.3.6"
   }
 }
